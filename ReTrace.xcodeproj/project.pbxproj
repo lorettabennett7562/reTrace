@@ -6,20 +6,63 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		A00000000000000000000023 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A00000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A0000000000000000000000A;
+			remoteInfo = ReTrace;
+		};
+		A00000000000000000000025 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A00000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A0000000000000000000000A;
+			remoteInfo = ReTrace;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		D7EF1C6730540D2300F7609F /* ReTrace.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReTrace.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A00000000000000000000007 /* ReTrace.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReTrace.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A00000000000000000000008 /* ReTraceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReTraceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A00000000000000000000009 /* ReTraceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReTraceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		D7EF1C6930540D2300F7609F /* ReTrace */ = {
+		A00000000000000000000004 /* ReTrace */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = ReTrace;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000005 /* ReTraceTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ReTraceTests;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000006 /* ReTraceUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ReTraceUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D7EF1C6430540D2300F7609F /* Frameworks */ = {
+		A0000000000000000000000E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00000000000000000000011 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00000000000000000000014 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -29,18 +72,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D7EF1C5E30540D2300F7609F = {
+		A00000000000000000000002 = {
 			isa = PBXGroup;
 			children = (
-				D7EF1C6930540D2300F7609F /* ReTrace */,
-				D7EF1C6830540D2300F7609F /* Products */,
+				A00000000000000000000004 /* ReTrace */,
+				A00000000000000000000005 /* ReTraceTests */,
+				A00000000000000000000006 /* ReTraceUITests */,
+				A00000000000000000000003 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		D7EF1C6830540D2300F7609F /* Products */ = {
+		A00000000000000000000003 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D7EF1C6730540D2300F7609F /* ReTrace.app */,
+				A00000000000000000000007 /* ReTrace.app */,
+				A00000000000000000000008 /* ReTraceTests.xctest */,
+				A00000000000000000000009 /* ReTraceUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,64 +95,130 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D7EF1C6630540D2300F7609F /* ReTrace */ = {
+		A0000000000000000000000A /* ReTrace */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D7EF1C7430540D2400F7609F /* Build configuration list for PBXNativeTarget "ReTrace" */;
+			buildConfigurationList = A00000000000000000000019 /* Build configuration list for PBXNativeTarget "ReTrace" */;
 			buildPhases = (
-				D7EF1C6330540D2300F7609F /* Sources */,
-				D7EF1C6430540D2300F7609F /* Frameworks */,
-				D7EF1C6530540D2300F7609F /* Resources */,
+				A0000000000000000000000D /* Sources */,
+				A0000000000000000000000E /* Frameworks */,
+				A0000000000000000000000F /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				D7EF1C6930540D2300F7609F /* ReTrace */,
+				A00000000000000000000004 /* ReTrace */,
 			);
 			name = ReTrace;
 			packageProductDependencies = (
 			);
 			productName = ReTrace;
-			productReference = D7EF1C6730540D2300F7609F /* ReTrace.app */;
+			productReference = A00000000000000000000007 /* ReTrace.app */;
 			productType = "com.apple.product-type.application";
+		};
+		A0000000000000000000000B /* ReTraceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A0000000000000000000001C /* Build configuration list for PBXNativeTarget "ReTraceTests" */;
+			buildPhases = (
+				A00000000000000000000010 /* Sources */,
+				A00000000000000000000011 /* Frameworks */,
+				A00000000000000000000012 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A00000000000000000000022 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A00000000000000000000005 /* ReTraceTests */,
+			);
+			name = ReTraceTests;
+			productName = ReTraceTests;
+			productReference = A00000000000000000000008 /* ReTraceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A0000000000000000000000C /* ReTraceUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A0000000000000000000001F /* Build configuration list for PBXNativeTarget "ReTraceUITests" */;
+			buildPhases = (
+				A00000000000000000000013 /* Sources */,
+				A00000000000000000000014 /* Frameworks */,
+				A00000000000000000000015 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A00000000000000000000024 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A00000000000000000000006 /* ReTraceUITests */,
+			);
+			name = ReTraceUITests;
+			productName = ReTraceUITests;
+			productReference = A00000000000000000000009 /* ReTraceUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		D7EF1C5F30540D2300F7609F /* Project object */ = {
+		A00000000000000000000001 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2660;
 				LastUpgradeCheck = 2660;
 				TargetAttributes = {
-					D7EF1C6630540D2300F7609F = {
+					A0000000000000000000000A = {
 						CreatedOnToolsVersion = 26.6;
+					};
+					A0000000000000000000000B = {
+						CreatedOnToolsVersion = 26.6;
+						TestTargetID = A0000000000000000000000A;
+					};
+					A0000000000000000000000C = {
+						CreatedOnToolsVersion = 26.6;
+						TestTargetID = A0000000000000000000000A;
 					};
 				};
 			};
-			buildConfigurationList = D7EF1C6230540D2300F7609F /* Build configuration list for PBXProject "ReTrace" */;
+			buildConfigurationList = A00000000000000000000016 /* Build configuration list for PBXProject "ReTrace" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = D7EF1C5E30540D2300F7609F;
+			mainGroup = A00000000000000000000002;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = D7EF1C6830540D2300F7609F /* Products */;
+			productRefGroup = A00000000000000000000003 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D7EF1C6630540D2300F7609F /* ReTrace */,
+				A0000000000000000000000A /* ReTrace */,
+				A0000000000000000000000B /* ReTraceTests */,
+				A0000000000000000000000C /* ReTraceUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		D7EF1C6530540D2300F7609F /* Resources */ = {
+		A0000000000000000000000F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00000000000000000000012 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00000000000000000000015 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -115,7 +228,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		D7EF1C6330540D2300F7609F /* Sources */ = {
+		A0000000000000000000000D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00000000000000000000010 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00000000000000000000013 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -124,8 +251,23 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		A00000000000000000000022 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ReTrace;
+			target = A0000000000000000000000A /* ReTrace */;
+			targetProxy = A00000000000000000000023 /* PBXContainerItemProxy */;
+		};
+		A00000000000000000000024 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ReTrace;
+			target = A0000000000000000000000A /* ReTrace */;
+			targetProxy = A00000000000000000000025 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
-		D7EF1C7230540D2400F7609F /* Debug */ = {
+		A00000000000000000000017 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -177,7 +319,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -188,7 +330,7 @@
 			};
 			name = Debug;
 		};
-		D7EF1C7330540D2400F7609F /* Release */ = {
+		A00000000000000000000018 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -234,7 +376,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -244,7 +386,7 @@
 			};
 			name = Release;
 		};
-		D7EF1C7530540D2400F7609F /* Debug */ = {
+		A0000000000000000000001A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -253,6 +395,9 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = ReTrace;
+				INFOPLIST_KEY_NSCameraUsageDescription = "ReTrace uses the camera to capture reference photos of how your items are set up, so you can restore them correctly later. Photos stay on this device.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "ReTrace can use photos from your library as reference images for a project. Photos stay on this device.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -263,7 +408,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = retrace.ReTrace;
+				PRODUCT_BUNDLE_IDENTIFIER = com.retrace.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -275,7 +420,7 @@
 			};
 			name = Debug;
 		};
-		D7EF1C7630540D2400F7609F /* Release */ = {
+		A0000000000000000000001B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -284,6 +429,9 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = ReTrace;
+				INFOPLIST_KEY_NSCameraUsageDescription = "ReTrace uses the camera to capture reference photos of how your items are set up, so you can restore them correctly later. Photos stay on this device.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "ReTrace can use photos from your library as reference images for a project. Photos stay on this device.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -294,7 +442,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = retrace.ReTrace;
+				PRODUCT_BUNDLE_IDENTIFIER = com.retrace.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -306,28 +454,146 @@
 			};
 			name = Release;
 		};
+		A0000000000000000000001D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.retrace.ios.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReTrace.app/ReTrace";
+			};
+			name = Debug;
+		};
+		A0000000000000000000001E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.retrace.ios.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReTrace.app/ReTrace";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A00000000000000000000020 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.retrace.ios.UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ReTrace;
+			};
+			name = Debug;
+		};
+		A00000000000000000000021 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.retrace.ios.UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ReTrace;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D7EF1C6230540D2300F7609F /* Build configuration list for PBXProject "ReTrace" */ = {
+		A00000000000000000000016 /* Build configuration list for PBXProject "ReTrace" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D7EF1C7230540D2400F7609F /* Debug */,
-				D7EF1C7330540D2400F7609F /* Release */,
+				A00000000000000000000017 /* Debug */,
+				A00000000000000000000018 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D7EF1C7430540D2400F7609F /* Build configuration list for PBXNativeTarget "ReTrace" */ = {
+		A00000000000000000000019 /* Build configuration list for PBXNativeTarget "ReTrace" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D7EF1C7530540D2400F7609F /* Debug */,
-				D7EF1C7630540D2400F7609F /* Release */,
+				A0000000000000000000001A /* Debug */,
+				A0000000000000000000001B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A0000000000000000000001C /* Build configuration list for PBXNativeTarget "ReTraceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A0000000000000000000001D /* Debug */,
+				A0000000000000000000001E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A0000000000000000000001F /* Build configuration list for PBXNativeTarget "ReTraceUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00000000000000000000020 /* Debug */,
+				A00000000000000000000021 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = D7EF1C5F30540D2300F7609F /* Project object */;
+	rootObject = A00000000000000000000001 /* Project object */;
 }

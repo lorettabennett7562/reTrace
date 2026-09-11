@@ -1,0 +1,27 @@
+# Xcode
+build/
+DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcworkspace/xcshareddata/swiftpm
+.swiftpm/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# CocoaPods / SPM (not used, kept for safety)
+Pods/
+
+# macOS
+.DS_Store
+
+# Codemagic / CI local artifacts
+/build
+*.xcresult
+demo/
+
+# Cloudflare Workers (website/)
+website/.wrangler/
+website/node_modules/

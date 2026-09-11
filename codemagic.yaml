@@ -1,0 +1,139 @@
+workflows:
+  retrace-tests:
+    name: ReTrace - Unit & UI Tests
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+          source: true
+      cancel_previous_builds: true
+    environment:
+      xcode: latest
+      vars:
+        XCODE_PROJECT: "ReTrace.xcodeproj"
+        XCODE_SCHEME: "ReTrace"
+    scripts:
+      - name: Resolve an available iPhone simulator
+        script: |
+          #!/usr/bin/env bash
+          set -e
+          UDID=$(xcrun simctl list devices available | grep -E "iPhone" | grep -oE '[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}' | head -1)
+          if [ -z "$UDID" ]; then
+            echo "No existing iPhone simulator found — creating one."
+            RUNTIME=$(xcrun simctl list runtimes available | grep -i "iOS" | tail -1 | grep -oE 'com\.apple\.CoreSimulator\.SimRuntime\.[A-Za-z0-9.-]+')
+            DEVICETYPE=$(xcrun simctl list devicetypes | grep -E "iPhone" | tail -1 | grep -oE 'com\.apple\.CoreSimulator\.SimDeviceType\.[A-Za-z0-9-]+')
+            UDID=$(xcrun simctl create "CI-iPhone" "$DEVICETYPE" "$RUNTIME")
+          fi
+          echo "Using iPhone simulator: $UDID"
+          echo "IPHONE_SIM_UDID=$UDID" >> $CM_ENV
+      - name: Run unit tests (iPhone simulator)
+        script: |
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -destination "platform=iOS Simulator,id=$IPHONE_SIM_UDID" \
+            -only-testing:ReTraceTests \
+            test
+      - name: Run critical UI tests (iPhone simulator)
+        script: |
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -destination "platform=iOS Simulator,id=$IPHONE_SIM_UDID" \
+            -only-testing:ReTraceUITests \
+            test
+    artifacts:
+      - build/ios/**/*.xcresult
+
+  retrace-ipad-tests:
+    name: ReTrace - iPad Layout Tests
+    max_build_duration: 30
+    instance_type: mac_mini_m2
+    environment:
+      xcode: latest
+      vars:
+        XCODE_PROJECT: "ReTrace.xcodeproj"
+        XCODE_SCHEME: "ReTrace"
+    scripts:
+      - name: Resolve an available iPad simulator
+        script: |
+          #!/usr/bin/env bash
+          set -e
+          UDID=$(xcrun simctl list devices available | grep -E "iPad Pro|iPad Air|iPad " | grep -oE '[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}' | head -1)
+          if [ -z "$UDID" ]; then
+            echo "No existing iPad simulator found — creating one."
+            RUNTIME=$(xcrun simctl list runtimes available | grep -i "iOS" | tail -1 | grep -oE 'com\.apple\.CoreSimulator\.SimRuntime\.[A-Za-z0-9.-]+')
+            DEVICETYPE=$(xcrun simctl list devicetypes | grep -E "iPad Pro" | tail -1 | grep -oE 'com\.apple\.CoreSimulator\.SimDeviceType\.[A-Za-z0-9-]+')
+            UDID=$(xcrun simctl create "CI-iPad" "$DEVICETYPE" "$RUNTIME")
+          fi
+          echo "Using iPad simulator: $UDID"
+          echo "IPAD_SIM_UDID=$UDID" >> $CM_ENV
+      - name: Run iPad layout UI tests
+        script: |
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -destination "platform=iOS Simulator,id=$IPAD_SIM_UDID" \
+            -only-testing:ReTraceUITests/iPadLayoutUITests \
+            test
+
+  retrace-release:
+    name: ReTrace - App Store Build
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: retraceApi
+    environment:
+      xcode: latest
+      vars:
+        XCODE_PROJECT: "ReTrace.xcodeproj"
+        XCODE_SCHEME: "ReTrace"
+        BUNDLE_ID: "com.retrace.ios"
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: "com.retrace.ios"
+    scripts:
+      - name: Resolve an available iPhone simulator
+        script: |
+          #!/usr/bin/env bash
+          set -e
+          UDID=$(xcrun simctl list devices available | grep -E "iPhone" | grep -oE '[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}' | head -1)
+          if [ -z "$UDID" ]; then
+            echo "No existing iPhone simulator found — creating one."
+            RUNTIME=$(xcrun simctl list runtimes available | grep -i "iOS" | tail -1 | grep -oE 'com\.apple\.CoreSimulator\.SimRuntime\.[A-Za-z0-9.-]+')
+            DEVICETYPE=$(xcrun simctl list devicetypes | grep -E "iPhone" | tail -1 | grep -oE 'com\.apple\.CoreSimulator\.SimDeviceType\.[A-Za-z0-9-]+')
+            UDID=$(xcrun simctl create "CI-iPhone" "$DEVICETYPE" "$RUNTIME")
+          fi
+          echo "Using iPhone simulator: $UDID"
+          echo "IPHONE_SIM_UDID=$UDID" >> $CM_ENV
+      - name: Run unit tests before release build
+        script: |
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -destination "platform=iOS Simulator,id=$IPHONE_SIM_UDID" \
+            -only-testing:ReTraceTests \
+            test
+      - name: Set up code signing
+        script: |
+          xcode-project use-profiles
+      - name: Bump build number
+        script: |
+          agvtool new-version -all "$(($(app-store-connect get-latest-app-store-build-number "$BUNDLE_ID") + 1))"
+      - name: Build and archive
+        script: |
+          xcode-project build-ipa \
+            --project "$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME"
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        submit_to_app_store: false

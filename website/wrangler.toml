@@ -1,0 +1,24 @@
+name = "wispy-recipe-f1b8"
+main = "worker.js"
+compatibility_date = "2026-01-01"
+account_id = "4b94c072248bf9014540470dd7e4ee1d"
+
+routes = [
+  { pattern = "rtrace.xyz", custom_domain = true }
+]
+
+# Required for the support form (POST /api/contact) to actually send email:
+#   wrangler secret put RESEND_API_KEY
+# Get a free key at https://resend.com after creating an account.
+#
+# Form submissions are addressed to support@rtrace.xyz (see SUPPORT_EMAIL in
+# worker.js). Either set up Cloudflare Email Routing for that address to
+# forward to your real inbox, or change SUPPORT_EMAIL to an address you
+# already own.
+
+[vars]
+# Optional: once you verify your own sending domain in Resend, set this to
+# something like "ReTrace <support@rtrace.xyz>" and redeploy. Until then the
+# Resend sandbox address (onboarding@resend.dev) is used, which works
+# without a verified domain.
+# CONTACT_FROM_EMAIL = "ReTrace <support@rtrace.xyz>"

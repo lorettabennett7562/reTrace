@@ -92,10 +92,10 @@ workflows:
       vars:
         XCODE_PROJECT: "ReTrace.xcodeproj"
         XCODE_SCHEME: "ReTrace"
-        BUNDLE_ID: "com.retrace.ios"
+        BUNDLE_ID: "com.retrace.lorettapp"
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: "com.retrace.ios"
+        bundle_identifier: "com.retrace.lorettapp"
     scripts:
       - name: Resolve an available iPhone simulator
         script: |

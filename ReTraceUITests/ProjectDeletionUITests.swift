@@ -21,8 +21,8 @@ final class ProjectDeletionUITests: XCTestCase {
         app.buttons["projectDetail.menuButton"].tap()
         app.buttons["projectDetail.deleteButton"].tap()
 
-        XCTAssertTrue(app.buttons["Cancel"].waitForExistence(timeout: 10))
-        app.buttons["Cancel"].tap()
+        XCTAssertTrue(app.buttons["projectDetail.confirmDeleteButton"].firstMatch.waitForExistence(timeout: 10))
+        app.cancelConfirmationDialog()
 
         XCTAssertTrue(app.staticTexts["TV Setup"].waitForExistence(timeout: 10))
     }
@@ -34,7 +34,7 @@ final class ProjectDeletionUITests: XCTestCase {
         app.buttons["projectDetail.menuButton"].tap()
         app.buttons["projectDetail.deleteButton"].tap()
 
-        let confirmButton = app.buttons["projectDetail.confirmDeleteButton"]
+        let confirmButton = app.buttons["projectDetail.confirmDeleteButton"].firstMatch
         XCTAssertTrue(confirmButton.waitForExistence(timeout: 10))
         confirmButton.tap()
 

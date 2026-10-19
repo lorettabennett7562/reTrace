@@ -41,6 +41,20 @@ extension XCUIApplication {
     }
 }
 
+extension XCUIApplication {
+    /// iOS 26 shows a Cancel button in confirmation dialogs; iOS 27 shows a
+    /// popover with no Cancel button, dismissed by tapping outside it.
+    func cancelConfirmationDialog() {
+        let cancel = buttons["Cancel"]
+        if cancel.waitForExistence(timeout: 3) {
+            cancel.tap()
+        } else {
+            otherElements["PopoverDismissRegion"].firstMatch
+                .coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.95)).tap()
+        }
+    }
+}
+
 extension XCUIElement {
     /// Polls until the element is both present and hittable (e.g. no longer
     /// obscured by a lingering keyboard), rather than just existing.

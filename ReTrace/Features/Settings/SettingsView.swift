@@ -1,3 +1,4 @@
+import SafariServices
 import SwiftData
 import SwiftUI
 
@@ -7,6 +8,9 @@ struct SettingsView: View {
 
     @State private var showingDeleteAllConfirmation = false
     @State private var didDeleteAll = false
+    @State private var showingSupport = false
+
+    private static let supportURL = URL(string: "https://rtrace.xyz/#support")!
 
     var body: some View {
         @Bindable var settings = container.settingsStore
@@ -40,6 +44,15 @@ struct SettingsView: View {
                 .accessibilityIdentifier("settings.deleteAllDataButton")
             }
 
+            Section(String(localized: "Support")) {
+                Button {
+                    showingSupport = true
+                } label: {
+                    Label(String(localized: "Support"), systemImage: "questionmark.circle")
+                }
+                .accessibilityIdentifier("settings.supportButton")
+            }
+
             Section(String(localized: "Privacy")) {
                 Text("All ReTrace projects are stored on this device.")
                     .font(RTTypography.secondary)
@@ -68,6 +81,9 @@ struct SettingsView: View {
         .alert(String(localized: "All Data Deleted"), isPresented: $didDeleteAll) {
             Button(String(localized: "OK"), role: .cancel) {}
         }
+        .sheet(isPresented: $showingSupport) {
+            SafariView(url: Self.supportURL).ignoresSafeArea()
+        }
     }
 
     private var appVersion: String {
@@ -83,6 +99,16 @@ struct SettingsView: View {
         }
         didDeleteAll = true
     }
+}
+
+private struct SafariView: UIViewControllerRepresentable {
+    let url: URL
+
+    func makeUIViewController(context: Context) -> SFSafariViewController {
+        SFSafariViewController(url: url)
+    }
+
+    func updateUIViewController(_ controller: SFSafariViewController, context: Context) {}
 }
 
 #Preview {

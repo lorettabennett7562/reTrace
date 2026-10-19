@@ -84,6 +84,6 @@ final class RestoreModeUITests: XCTestCase {
         completeButton.tap()
         app.buttons["restore.confirmCompleteButton"].firstMatch.tap()
 
-        XCTAssertTrue(app.staticTexts["This project is complete."].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["Completed"].waitForExistence(timeout: 10))
     }
 }

@@ -45,8 +45,8 @@ final class SettingsUITests: XCTestCase {
         app.tapTab("Settings")
 
         app.buttons["settings.deleteAllDataButton"].tap()
-        XCTAssertTrue(app.buttons["Cancel"].waitForExistence(timeout: 10))
-        app.buttons["Cancel"].tap()
+        XCTAssertTrue(app.buttons["settings.confirmDeleteAllButton"].firstMatch.waitForExistence(timeout: 10))
+        app.cancelConfirmationDialog()
 
         // Cancelling must not delete anything or crash.
         XCTAssertTrue(app.buttons["settings.deleteAllDataButton"].waitForExistence(timeout: 5))
@@ -63,5 +63,13 @@ final class SettingsUITests: XCTestCase {
 
         app.buttons["projectDetail.menuButton"].tap()
         XCTAssertTrue(app.buttons["projectDetail.exportButton"].waitForExistence(timeout: 10))
+    }
+
+    func testSupportButtonIsPresentInSettings() {
+        let app = XCUIApplication()
+        app.launchForTesting()
+        app.tapTab("Settings")
+
+        XCTAssertTrue(app.buttons["settings.supportButton"].waitForExistence(timeout: 10))
     }
 }

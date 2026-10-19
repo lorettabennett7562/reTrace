@@ -11,7 +11,7 @@ final class CaptureFlowUITests: XCTestCase {
         app.buttons["projects.newProjectButton"].tap()
 
         let titleField = app.textFields["project.titleField"]
-        XCTAssertTrue(titleField.waitForExistence(timeout: 10))
+        XCTAssertTrue(titleField.waitForHittable(timeout: 10))
         titleField.tap()
         titleField.typeText(title)
         app.buttons["project.startCaptureButton"].tap()

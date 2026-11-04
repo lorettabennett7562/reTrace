@@ -57,5 +57,9 @@ final class LaunchDecisionTests: XCTestCase {
         XCTAssertNil(requestJSON["deviceName"])
         XCTAssertEqual(requestJSON["pushToken"] as? String, "")
         XCTAssertEqual(requestJSON["adjustAdid"] as? String, "adjust-id")
+        let manifestURL = try XCTUnwrap(Bundle.main.url(forResource: "PrivacyInfo", withExtension: "xcprivacy"))
+        let manifest = try XCTUnwrap(PropertyListSerialization.propertyList(from: Data(contentsOf: manifestURL), format: nil) as? [String: Any])
+        XCTAssertEqual(manifest["NSPrivacyTracking"] as? Bool, false)
+        XCTAssertEqual(manifest["NSPrivacyTrackingDomains"] as? [String], [])
     }
 }

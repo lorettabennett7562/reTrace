@@ -54,6 +54,8 @@ struct SettingsView: View {
             }
 
             Section(String(localized: "Privacy")) {
+                Link("Privacy Policy", destination: URL(string: "https://rtrace.xyz/privacy")!)
+                    .accessibilityIdentifier("settings.privacyPolicyLink")
                 Text("All ReTrace projects are stored on this device.")
                     .font(RTTypography.secondary)
                     .foregroundStyle(RTColors.textSecondary)

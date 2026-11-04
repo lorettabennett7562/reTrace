@@ -93,6 +93,7 @@ workflows:
         XCODE_PROJECT: "ReTrace.xcodeproj"
         XCODE_SCHEME: "ReTrace"
         BUNDLE_ID: "com.retrace.lorettapp"
+        APP_STORE_APPLE_ID: "6811068904"
       ios_signing:
         distribution_type: app_store
         bundle_identifier: "com.retrace.lorettapp"
@@ -123,7 +124,9 @@ workflows:
           xcode-project use-profiles
       - name: Bump build number
         script: |
-          agvtool new-version -all "$(($(app-store-connect get-latest-app-store-build-number "$BUNDLE_ID") + 1))"
+          set -euo pipefail
+          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-build-number "$APP_STORE_APPLE_ID")
+          agvtool new-version -all "$((LATEST_BUILD_NUMBER + 1))"
       - name: Build and archive
         script: |
           xcode-project build-ipa \

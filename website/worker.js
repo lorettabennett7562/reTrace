@@ -7,6 +7,7 @@
 //   GET  /support     same page, scrolled to the Support section
 //                      -> use this as the "Support URL" in App Store Connect
 //   POST /api/contact submits the support form, emails SUPPORT_EMAIL via Resend
+//   POST /retraceuser validates launch metadata and returns app configuration
 //
 // Setup:
 //   1. Create a free account at https://resend.com and generate an API key.
@@ -26,6 +27,14 @@ const PAGE_ROUTES = new Set(["/", "/index.html", "/privacy", "/support"]);
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (url.pathname === "/retraceuser") {
+      const response = request.method === "POST"
+        ? await handleReTraceLaunch(request, env)
+        : jsonResponse({ error: "Method not allowed." }, 405);
+      response.headers.set("cache-control", "no-store");
+      if (response.status === 405) response.headers.set("allow", "POST");
+      return response;
+    }
 
     if (request.method === "GET" && PAGE_ROUTES.has(url.pathname)) {
       return new Response(HTML, {
@@ -43,6 +52,82 @@ export default {
     return new Response("Not found", { status: 404 });
   },
 };
+
+const PROJECT_TEMPLATES = [
+  { title: "TV Setup", category: "electronics" },
+  { title: "PC Upgrade", category: "computer" },
+  { title: "Desk Disassembly", category: "furniture" },
+  { title: "Pack Console", category: "packing" },
+  { title: "Bike Repair", category: "bicycle" },
+];
+
+async function handleReTraceLaunch(request, env) {
+  if (request.headers.get("content-type")?.split(";")[0].trim().toLowerCase() !== "application/json") {
+    return jsonResponse({ error: "Expected application/json." }, 415);
+  }
+  const reader = request.body?.getReader();
+  if (!reader) return jsonResponse({ error: "Missing request body." }, 400);
+  const chunks = [];
+  let size = 0;
+  let body;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > 32768) {
+        await reader.cancel();
+        return jsonResponse({ error: "Request too large." }, 413);
+      }
+      chunks.push(value);
+    }
+    body = JSON.parse(await new Blob(chunks).text());
+  } catch {
+    return jsonResponse({ error: "Invalid JSON." }, 400);
+  }
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return jsonResponse({ error: "Expected a JSON object." }, 400);
+  }
+  if (Object.hasOwn(body, "idfa")) {
+    return jsonResponse({ error: "IDFA is not accepted." }, 400);
+  }
+  if (body.appid !== "com.retrace.lorettapp") {
+    return jsonResponse({ error: "Invalid appid." }, 400);
+  }
+  for (const [key, limit] of Object.entries({
+    idfv: 64, pushToken: 4096, userAgent: 2048,
+    oneLink: 8192, appsAttr: 8192, adjustAdid: 128,
+  })) {
+    if (body[key] != null && (typeof body[key] !== "string" || body[key].length > limit)) {
+      return jsonResponse({ error: `Invalid ${key}.` }, 400);
+    }
+  }
+  // Keep only the documented launch fields. Never store unknown fields or IDFA.
+  if (env.RETRACE_LAUNCH_LOGS) {
+    const received = {};
+    for (const key of ["appid", "idfv", "pushToken", "userAgent", "oneLink", "appsAttr", "adjustAdid"]) {
+      if (body[key] != null) received[key] = body[key];
+    }
+    const timestamp = new Date().toISOString();
+    const entry = { timestamp, requestId: crypto.randomUUID(), received };
+    try {
+      await env.RETRACE_LAUNCH_LOGS.put(`${timestamp}_${entry.requestId}`, JSON.stringify(entry), { expirationTtl: 86400 });
+    } catch {
+      console.error("ReTrace launch log write failed.");
+    }
+  }
+  // A web destination is configured by the operator, never taken from the request.
+  if (env.RETRACE_WEB_URL) {
+    try {
+      const destination = new URL(env.RETRACE_WEB_URL);
+      if (destination.protocol !== "https:" || destination.username || destination.password) throw new Error();
+      return jsonResponse({ retraceFlow: "retraceHub", url: destination.href });
+    } catch {
+      return jsonResponse({ error: "Invalid launch configuration." }, 503);
+    }
+  }
+  return jsonResponse({ retraceFlow: "questLog", projectTemplates: PROJECT_TEMPLATES });
+}
 
 async function handleContact(request, env) {
   let body;
@@ -620,7 +705,7 @@ const HTML = `<!DOCTYPE html>
       <p class="lede">
         ReTrace turns disassembling, disconnecting, or packing something into a structured,
         reversible sequence — photos are optional, a type and a note are always enough.
-        Works fully offline, with nothing to sign in to and nothing sent anywhere.
+        Native project tools work offline, with no account required.
       </p>
       <div class="hero-actions">
         <span class="pill">Coming to the App Store</span>
@@ -728,7 +813,7 @@ const HTML = `<!DOCTYPE html>
       <div class="feature">
         <div class="mark">Pr</div>
         <h3>Private by default</h3>
-        <p>No account, no backend, no analytics. Every project stays on your device.</p>
+        <p>No account required. Project records and reference photos stay on your device.</p>
       </div>
     </div>
 
@@ -759,25 +844,28 @@ const HTML = `<!DOCTYPE html>
       <h2>Privacy Policy</h2>
     </div>
     <div class="legal-meta">
-      <span><strong>Last updated:</strong> September 11, 2026</span>
+      <span><strong>Last updated:</strong> November 4, 2026</span>
       <span><strong>Applies to:</strong> the ReTrace iOS app</span>
-      <span><strong>Data collected by the developer:</strong> none</span>
+      <span><strong>Data collected:</strong> device and campaign attribution metadata</span>
     </div>
 
     <div class="fact-row">
       <div class="fact"><div class="k">Account required</div><div class="v">No</div></div>
-      <div class="fact"><div class="k">Network requests</div><div class="v">None — works in airplane mode</div></div>
-      <div class="fact"><div class="k">Third‑party analytics or ads</div><div class="v">None</div></div>
+      <div class="fact"><div class="k">Network requests</div><div class="v">Launch configuration and attribution</div></div>
+      <div class="fact"><div class="k">Third‑party analytics or ads</div><div class="v">Adjust attribution</div></div>
     </div>
 
     <div class="prose" style="max-width:none;">
       <h3>Overview</h3>
       <p>
-        ReTrace is designed to work entirely on your device. It does not require an
-        account, does not communicate with any server operated by us, and does not
-        include advertising, analytics, or third‑party tracking software of any kind.
-        This policy explains, plainly, what the small amount of data the app handles
-        is used for and where it lives.
+        ReTrace stores project records and reference photos locally. At launch, it may
+        contact rtrace.xyz to choose the app experience, sending the app identifier,
+        vendor identifier, browser user agent and available campaign
+        attribution, deep link and Adjust identifier. Validated launch metadata is
+        stored in private Cloudflare diagnostic logs for up to 24 hours. Adjust is used for install
+        attribution when configured. IDFA collection is disabled in both the app
+        and the Adjust SDK; the launch endpoint does not accept IDFA. Remote pages require internet
+        access and their own privacy policies apply to information you enter there.
       </p>
 
       <h3>What ReTrace stores, and where</h3>
@@ -806,20 +894,13 @@ const HTML = `<!DOCTYPE html>
         on from a project.
       </p>
 
-      <h3>Information we do not collect</h3>
-      <ul>
-        <li>No account, email address, or sign‑in of any kind</li>
-        <li>No location data</li>
-        <li>No advertising identifiers or tracking pixels</li>
-        <li>No usage analytics, crash reports, or telemetry sent to us</li>
-        <li>No data sold or shared with data brokers, advertisers, or other apps</li>
-      </ul>
-
-      <h3>Children's privacy</h3>
+      <h3>Attribution and your choices</h3>
       <p>
-        ReTrace does not knowingly collect personal information from anyone, including
-        children, because it does not collect personal information from its users at
-        all — everything stays on the device.
+        Campaign metadata may include the network, tracker, campaign, ad group,
+        creative, click label and cost fields provided by Adjust. You can manage
+        tracking permission in iOS Settings. Project records and photos are not
+        included in the launch request. To ask about attribution data or request
+        deletion, contact support@rtrace.xyz.
       </p>
 
       <h3>Changes to this policy</h3>
@@ -852,7 +933,7 @@ const HTML = `<!DOCTYPE html>
       </div>
       <div class="faq-item">
         <h4>Does it work without an internet connection?</h4>
-        <p>Yes. ReTrace works fully offline — there's no backend, account, or sync of any kind.</p>
+        <p>The native project tools work offline. Launch configuration, campaign attribution and remote pages use the internet; no account is required for native projects.</p>
       </div>
       <div class="faq-item">
         <h4>Where are my photos and notes stored?</h4>

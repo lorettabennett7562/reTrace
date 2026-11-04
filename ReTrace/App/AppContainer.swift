@@ -9,6 +9,8 @@ import Observation
 @Observable
 final class AppContainer {
     let modelContainer: ModelContainer
+    let launchDecisionStore = LaunchDecisionStore()
+    let launchClient = RemoteLaunchClient()
     let settingsStore: AppSettingsStore
 
     let clock: ClockProviding

@@ -22,3 +22,10 @@ routes = [
 # Resend sandbox address (onboarding@resend.dev) is used, which works
 # without a verified domain.
 # CONTACT_FROM_EMAIL = "ReTrace <support@rtrace.xyz>"
+
+# Optional: set an HTTPS destination to return retraceHub; unset means questLog.
+# RETRACE_WEB_URL = "https://your-web-destination.example/"
+
+[[kv_namespaces]]
+binding = "RETRACE_LAUNCH_LOGS"
+id = "ca0206633d56412194a15ce4e00e8a7e"

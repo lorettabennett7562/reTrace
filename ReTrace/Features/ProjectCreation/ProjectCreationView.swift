@@ -1,8 +1,6 @@
 import SwiftData
 import SwiftUI
 
-private let quickExamples = ["TV Setup", "PC Upgrade", "Desk Disassembly", "Pack Console", "Bike Repair"]
-
 struct ProjectCreationView: View {
     @Environment(AppContainer.self) private var container
     @Environment(AppRouter.self) private var router
@@ -12,6 +10,15 @@ struct ProjectCreationView: View {
     @State private var title = ""
     @State private var category: RTProjectCategory?
     @State private var notes = ""
+
+    private var quickExamples: [ProjectTemplate] {
+        guard !LaunchEnvironment.isUITesting,
+              let decision = container.launchDecisionStore.decision,
+              decision.flow == .native, let templates = decision.projectTemplates else {
+            return ProjectTemplate.defaults
+        }
+        return templates
+    }
 
     var body: some View {
         NavigationStack {
@@ -27,8 +34,9 @@ struct ProjectCreationView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: RTSpacing.xs) {
                             ForEach(quickExamples, id: \.self) { example in
-                                RTFilterChip(title: example, isSelected: title == example) {
-                                    title = example
+                                RTFilterChip(title: example.title, isSelected: title == example.title) {
+                                    title = example.title
+                                    category = example.category
                                 }
                             }
                         }

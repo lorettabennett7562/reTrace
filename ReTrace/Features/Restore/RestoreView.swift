@@ -7,7 +7,6 @@ struct RestoreView: View {
     @Environment(AppContainer.self) private var container
     @Environment(AppRouter.self) private var router
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @Query private var projects: [RTProject]
     @State private var displayIndex = 0
@@ -82,47 +81,52 @@ struct RestoreView: View {
                             .font(RTTypography.largeTitle)
                     }
 
-                    RTStoredImage(path: step.imagePath) {
-                        RoundedRectangle(cornerRadius: RTRadius.card, style: .continuous)
-                            .fill(RTColors.surfaceSecondary)
-                            .overlay {
-                                Image(systemName: "photo").font(.system(size: 32)).foregroundStyle(RTColors.textTertiary)
-                            }
-                    }
-                    .frame(maxWidth: .infinity, minHeight: 220, maxHeight: 320)
-                    .clipShape(RoundedRectangle(cornerRadius: RTRadius.card, style: .continuous))
-                    .accessibilityIdentifier("restore.referenceImage")
-
-                    if let note = step.note, !note.isEmpty {
-                        RTCard {
-                            VStack(alignment: .leading, spacing: RTSpacing.xxs) {
-                                Text("Recorded note").font(RTTypography.cardTitle)
-                                Text(note).font(RTTypography.body).foregroundStyle(RTColors.textSecondary)
-                            }
+                    AdaptiveSplit {
+                        RTStoredImage(path: step.imagePath) {
+                            RoundedRectangle(cornerRadius: RTRadius.card, style: .continuous)
+                                .fill(RTColors.surfaceSecondary)
+                                .overlay {
+                                    Image(systemName: "photo").font(.system(size: 32)).foregroundStyle(RTColors.textTertiary)
+                                }
                         }
-                    }
+                        .frame(maxWidth: .infinity, minHeight: 220, maxHeight: 320)
+                        .clipShape(RoundedRectangle(cornerRadius: RTRadius.card, style: .continuous))
+                        .accessibilityIdentifier("restore.referenceImage")
+                    } trailing: {
+                        VStack(alignment: .leading, spacing: RTSpacing.lg) {
 
-                    if !step.parts.isEmpty {
-                        RTCard {
-                            VStack(alignment: .leading, spacing: RTSpacing.xxs) {
-                                Text("Parts").font(RTTypography.cardTitle)
-                                ForEach(step.parts) { part in
-                                    Text("\(part.quantity)× \(part.name)")
-                                        .font(RTTypography.body)
-                                        .foregroundStyle(RTColors.textSecondary)
+                            if let note = step.note, !note.isEmpty {
+                                RTCard {
+                                    VStack(alignment: .leading, spacing: RTSpacing.xxs) {
+                                        Text("Recorded note").font(RTTypography.cardTitle)
+                                        Text(note).font(RTTypography.body).foregroundStyle(RTColors.textSecondary)
+                                    }
                                 }
                             }
+
+                            if !step.parts.isEmpty {
+                                RTCard {
+                                    VStack(alignment: .leading, spacing: RTSpacing.xxs) {
+                                        Text("Parts").font(RTTypography.cardTitle)
+                                        ForEach(step.parts) { part in
+                                            Text("\(part.quantity)× \(part.name)")
+                                                .font(RTTypography.body)
+                                                .foregroundStyle(RTColors.textSecondary)
+                                        }
+                                    }
+                                }
+                            }
+
+                            if step.isRestoreCompleted {
+                                Label(String(localized: "Completed"), systemImage: "checkmark.circle.fill")
+                                    .foregroundStyle(RTColors.success)
+                            }
+
+                            markDoneButton(for: project, step: step)
+
+                            navigationRow(restoreStepCount: restoreSteps.count, clampedIndex: clampedIndex)
                         }
                     }
-
-                    if step.isRestoreCompleted {
-                        Label(String(localized: "Completed"), systemImage: "checkmark.circle.fill")
-                            .foregroundStyle(RTColors.success)
-                    }
-
-                    markDoneButton(for: project, step: step)
-
-                    navigationRow(restoreStepCount: restoreSteps.count, clampedIndex: clampedIndex)
                 }
                 .padding(RTSpacing.md)
             }

@@ -23,7 +23,6 @@ enum ProjectCategoryFilter: Hashable, Identifiable {
 struct ProjectsView: View {
     @Environment(AppRouter.self) private var router
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @Query(sort: \RTProject.updatedAt, order: .reverse) private var allProjects: [RTProject]
 
@@ -53,15 +52,18 @@ struct ProjectsView: View {
                 emptyState
             } else {
                 ReadableWidthContainer {
-                    List {
-                        categoryFilterSection
-                        section(title: String(localized: "Favorites"), projects: favorites)
-                        section(title: String(localized: "Active"), projects: active)
-                        section(title: String(localized: "Ready to Restore"), projects: readyToRestore)
-                        section(title: String(localized: "Completed"), projects: completed)
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: RTSpacing.md) {
+                            categoryFilterBar
+                            VStack(alignment: .leading, spacing: RTSpacing.md) {
+                                section(title: String(localized: "Favorites"), projects: favorites)
+                                section(title: String(localized: "Active"), projects: active)
+                                section(title: String(localized: "Ready to Restore"), projects: readyToRestore)
+                                section(title: String(localized: "Completed"), projects: completed)
+                            }
+                            .padding(.horizontal, RTSpacing.md)
+                        }
                     }
-                    .listStyle(.plain)
-                    .scrollContentBackground(.hidden)
                 }
             }
         }
@@ -83,44 +85,46 @@ struct ProjectsView: View {
         }
     }
 
-    @ViewBuilder
-    private var categoryFilterSection: some View {
-        Section {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: RTSpacing.xs) {
-                    RTFilterChip(title: ProjectCategoryFilter.all.title, isSelected: categoryFilter == .all) {
-                        categoryFilter = .all
-                    }
-                    ForEach(RTProjectCategory.allCases) { category in
-                        RTFilterChip(
-                            title: category.displayName,
-                            isSelected: categoryFilter == .category(category)
-                        ) {
-                            categoryFilter = .category(category)
-                        }
+    private var categoryFilterBar: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: RTSpacing.xs) {
+                RTFilterChip(title: ProjectCategoryFilter.all.title, isSelected: categoryFilter == .all) {
+                    categoryFilter = .all
+                }
+                ForEach(RTProjectCategory.allCases) { category in
+                    RTFilterChip(
+                        title: category.displayName,
+                        isSelected: categoryFilter == .category(category)
+                    ) {
+                        categoryFilter = .category(category)
                     }
                 }
             }
-            .listRowInsets(EdgeInsets())
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.clear)
         }
+        .contentMargins(.horizontal, RTSpacing.md, for: .scrollContent)
     }
 
     @ViewBuilder
     private func section(title: String, projects: [RTProject]) -> some View {
         if !projects.isEmpty {
-            Section(title) {
-                ForEach(projects) { project in
-                    Button {
-                        router.openProjectDetail(project.id)
-                    } label: {
-                        ProjectListRow(project: project)
+            VStack(alignment: .leading, spacing: RTSpacing.xs) {
+                Text(title)
+                    .font(RTTypography.secondary)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(RTColors.textSecondary)
+                    .accessibilityAddTraits(.isHeader)
+                LazyVGrid(
+                    columns: [GridItem(.adaptive(minimum: 300), spacing: RTSpacing.sm, alignment: .top)],
+                    spacing: RTSpacing.sm
+                ) {
+                    ForEach(projects) { project in
+                        Button {
+                            router.openProjectDetail(project.id)
+                        } label: {
+                            ProjectListRow(project: project)
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
-                    .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
                 }
             }
         }

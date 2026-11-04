@@ -97,20 +97,27 @@ struct CaptureView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: RTSpacing.md) {
                     header(for: project)
-                    previewArea(for: project)
 
-                    Text("Photo (optional)")
-                        .font(RTTypography.metadata.weight(.semibold))
-                        .foregroundStyle(RTColors.textTertiary)
-                    photoActionsRow
+                    AdaptiveSplit(spacing: RTSpacing.md) {
+                        VStack(alignment: .leading, spacing: RTSpacing.md) {
+                            previewArea(for: project)
 
-                    stepTypePicker
-                    noteField
+                            Text("Photo (optional)")
+                                .font(RTTypography.metadata.weight(.semibold))
+                                .foregroundStyle(RTColors.textTertiary)
+                            photoActionsRow
+                        }
+                    } trailing: {
+                        VStack(alignment: .leading, spacing: RTSpacing.md) {
+                            stepTypePicker
+                            noteField
 
-                    secondaryActionsRow
+                            secondaryActionsRow
 
-                    if project.steps.count > 0 {
-                        finishDisassemblyButton(for: project)
+                            if project.steps.count > 0 {
+                                finishDisassemblyButton(for: project)
+                            }
+                        }
                     }
                 }
                 .padding(RTSpacing.md)
@@ -272,7 +279,7 @@ struct CaptureView: View {
                 .foregroundStyle(RTColors.textTertiary)
             // A wrapping grid rather than a horizontal scroll: every option
             // stays on screen at once, so nothing is hidden off to the side.
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 96), spacing: RTSpacing.xs)], alignment: .leading, spacing: RTSpacing.xs) {
+            FlowLayout {
                 ForEach(RTStepType.allCases) { type in
                     RTFilterChip(title: type.displayName, isSelected: selectedStepType == type) {
                         selectedStepType = type

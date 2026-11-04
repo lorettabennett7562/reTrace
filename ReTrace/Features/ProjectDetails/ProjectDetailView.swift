@@ -223,9 +223,14 @@ struct ProjectDetailView: View {
             } else if timelineDisplayMode == .diagram {
                 StepFlowDiagramView(steps: project.orderedSteps)
             } else {
-                ForEach(Array(project.orderedSteps.enumerated()), id: \.element.id) { index, step in
-                    RTCard {
-                        StepTimelineRow(step: step, position: index + 1)
+                LazyVGrid(
+                    columns: [GridItem(.adaptive(minimum: 300), spacing: RTSpacing.sm, alignment: .top)],
+                    spacing: RTSpacing.sm
+                ) {
+                    ForEach(Array(project.orderedSteps.enumerated()), id: \.element.id) { index, step in
+                        RTCard {
+                            StepTimelineRow(step: step, position: index + 1)
+                        }
                     }
                 }
             }

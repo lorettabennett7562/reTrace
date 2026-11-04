@@ -88,7 +88,7 @@ workflows:
     integrations:
       app_store_connect: retraceApi
     environment:
-      xcode: latest
+      xcode: "26.5"
       vars:
         XCODE_PROJECT: "ReTrace.xcodeproj"
         XCODE_SCHEME: "ReTrace"
